@@ -1,5 +1,4 @@
---// Messi Hub - Movement Module for "Steal a Brainrot"
---// Executor recomendado: Delta
+
 
 -- Proteção contra deteção básica de Anti-Cheat
 local mt = getrawmetatable(game)
@@ -48,4 +47,4 @@ end)
 applyBoost(50, 150) -- WalkSpeed = 50, JumpPower = 150
 
 -- Mensagem no console
-rconsoleprint("[Messi Hub] Speed e Jump ativados com bypass.\n")
+rconsoleprint("[nots] Speed e Jump ativados com bypass.\n")
