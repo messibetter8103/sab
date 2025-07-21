@@ -1,0 +1,51 @@
+--// Messi Hub - Movement Module for "Steal a Brainrot"
+--// Executor recomendado: Delta
+
+-- Proteção contra deteção básica de Anti-Cheat
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
+local backup = mt.__namecall
+
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if method == "FireServer" or method == "InvokeServer" then
+        local args = {...}
+        -- Detecção de eventos suspeitos (nome fictício, adapte se o nome mudar)
+        if tostring(self):lower():match("kick") or tostring(self):lower():match("ban") then
+            return warn("[Messi Hub] Anti-cheat bloqueado: ", tostring(self))
+        end
+        -- Evita envio de dados suspeitos
+        if typeof(args[1]) == "string" and args[1]:lower():match("report") then
+            return warn("[Messi Hub] Report bloqueado")
+        end
+    end
+    return backup(self, ...)
+end)
+
+--// Variáveis principais
+local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:WaitForChild("Humanoid")
+local hrp = char:WaitForChild("HumanoidRootPart")
+
+-- Função para aplicar modificações com segurança
+local function applyBoost(speed, jump)
+    humanoid.WalkSpeed = speed
+    humanoid.JumpPower = jump
+    humanoid.UseJumpPower = true
+end
+
+-- Reaplicar quando morrer
+player.CharacterAdded:Connect(function(newChar)
+    wait(1)
+    char = newChar
+    humanoid = newChar:WaitForChild("Humanoid")
+    hrp = newChar:WaitForChild("HumanoidRootPart")
+    applyBoost(50, 150) -- valores padrão
+end)
+
+-- Aplicar imediatamente
+applyBoost(50, 150) -- WalkSpeed = 50, JumpPower = 150
+
+-- Mensagem no console
+rconsoleprint("[Messi Hub] Speed e Jump ativados com bypass.\n")
